@@ -1,0 +1,26 @@
+{
+  "name": "diceanalysis",
+  "version": "1.0.0",
+  "description": "A tool for getting the output of rolls of dice and comparing potential inputs to those rolls",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BryceLTaylor/diceAnalysis.git"
+  },
+  "keywords": [
+    "dice",
+    "roll",
+    "rolls",
+    "analysis",
+    "compare"
+  ],
+  "author": "Bryce L. Taylor",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BryceLTaylor/diceAnalysis/issues"
+  },
+  "homepage": "https://github.com/BryceLTaylor/diceAnalysis#readme"
+}
