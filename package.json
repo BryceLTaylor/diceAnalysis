@@ -22,5 +22,11 @@
   "bugs": {
     "url": "https://github.com/BryceLTaylor/diceAnalysis/issues"
   },
-  "homepage": "https://github.com/BryceLTaylor/diceAnalysis#readme"
+  "homepage": "https://github.com/BryceLTaylor/diceAnalysis#readme",
+  "dependencies": {
+    "tsx": "^4.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7"
+  }
 }
