@@ -4,7 +4,8 @@
   "description": "A tool for getting the output of rolls of dice and comparing potential inputs to those rolls",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compare": "tsx ./src/compare.ts"
   },
   "repository": {
     "type": "git",
