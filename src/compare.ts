@@ -37,16 +37,18 @@ type roll = {
   min: number;
   max: number;
   multiples: number[][];
+  count: number;
 }
 */
 
 const getSingleResultObjectFromDiceRolled = (roll: number[]): roll => {
   return {
-    dice: roll.sort((a, b) => a - b),
+    dice: roll.sort((a, b) => b - a),
     total: roll.reduce((sum: number, currentValue: number) => sum + currentValue, 0),
     min: roll.reduce((smallest, newValue) => Math.min(smallest, newValue)),
     max: roll.reduce((largest, newValue) => Math.max(largest, newValue)),
-    multiples: []
+    multiples: [],
+    count: 1
   }
 }
 

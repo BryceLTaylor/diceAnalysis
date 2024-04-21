@@ -4,6 +4,7 @@ type roll = {
   min: number;
   max: number;
   multiples: number[][];
+  count: number;
 }
 
 type result = {
