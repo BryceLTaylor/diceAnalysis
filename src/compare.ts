@@ -83,7 +83,11 @@ const getDiceResults = (diceList: diceList) => {
   for (let i = 1; i < possibilitiesByDie.length; i++) {
     rollNumbers = expandRollsWithNewDie(possibilitiesByDie[i], rollNumbers)
   }
-  rollNumbers.forEach((rollNumber) => rolls.push(getSingleResultObjectFromDiceRolled(rollNumber, diceList.constant)));
+  rollNumbers.forEach((rollNumber) => {
+    let rollToAdd = getSingleResultObjectFromDiceRolled(rollNumber, diceList.constant);
+    rollToAdd = findMultiples(rollToAdd)
+    rolls.push(rollToAdd);
+  });
   return rolls;
 }
 
@@ -100,6 +104,26 @@ const expandRollsWithNewDie = (newDie: number[], rollSoFar: number[][]) => {
   }
 
   return newRolls;
+}
+
+const findMultiples = (originalRoll: roll): roll => {
+  let rollList: number[] = [...originalRoll.dice]
+  let multipleList: number[][] = [];
+  for (let i = rollList.length - 1; i >= 0; i--) {
+    let value: number = rollList[i];
+    let count: number = 1;
+    rollList.splice(i, 1);
+    for (let j = rollList.length - 1; j >= 0; j--) {
+      if (rollList[j] === value) {
+        count += 1;
+        rollList.splice(j, 1);
+        i--;
+      }
+    }
+    if (count > 1) multipleList.push([value, count]);
+  }
+  originalRoll.multiples = multipleList;
+  return originalRoll;
 }
 
 const args = process.argv;
