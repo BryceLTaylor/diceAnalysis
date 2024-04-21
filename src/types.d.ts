@@ -1,5 +1,6 @@
 type roll = {
   dice: number[];
+  constant: number;
   total: number;
   min: number;
   max: number;

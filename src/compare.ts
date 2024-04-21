@@ -49,9 +49,10 @@ type roll = {
 }
 */
 
-const getSingleResultObjectFromDiceRolled = (roll: number[]): roll => {
+const getSingleResultObjectFromDiceRolled = (roll: number[], constant: number): roll => {
   return {
     dice: roll.sort((a, b) => b - a),
+    constant: constant,
     total: roll.reduce((sum: number, currentValue: number) => sum + currentValue, 0),
     min: roll.reduce((smallest, newValue) => Math.min(smallest, newValue)),
     max: roll.reduce((largest, newValue) => Math.max(largest, newValue)),
