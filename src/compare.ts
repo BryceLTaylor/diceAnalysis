@@ -39,6 +39,17 @@ type roll = {
   multiples: number[][];
 }
 */
+
+const getSingleResultObjectFromDiceRolled = (roll: number[]): roll => {
+  return {
+    dice: roll.sort((a, b) => a - b),
+    total: roll.reduce((sum: number, currentValue: number) => sum + currentValue, 0),
+    min: roll.reduce((smallest, newValue) => Math.min(smallest, newValue)),
+    max: roll.reduce((largest, newValue) => Math.max(largest, newValue)),
+    multiples: []
+  }
+}
+
 const getDiceResults = (dice: number[]) => {
   // console.log(dice)
   // let rolls: roll[][] = [];
@@ -85,7 +96,10 @@ args.shift(); args.shift();
 const dice = interperetDiceString(args[0]);
 console.log(`dice: ${dice}`)
 const results = getDiceResults(dice);
-results.forEach((result) => console.log(result));
+results.forEach((result) => {
+  // console.log(result);
+  console.log(getSingleResultObjectFromDiceRolled(result))
+});
 
 // console.log(results)
 
