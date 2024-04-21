@@ -3,8 +3,6 @@ import { diceList, roll } from "./types";
 // acceptable values d6 2d6 d6+d8 d8+2d12 
 const interperetDiceString = (diceString: string) => {
   let diceList: diceList = {dice: [], constant: 0};
-  // let dice: number[] = [];
-  // let constant: number = 0;
   // interperet string
   let diceSets: string[] = diceString.split('+');
   if (diceSets.length === 0) {
@@ -82,13 +80,13 @@ const getDiceResults = (diceList: diceList) => {
   let rollNumbers: number[][] = [];
   for (let i = 0; i < possibilitiesByDie[0].length; i++) rollNumbers.push([possibilitiesByDie[0][i]])
   for (let i = 1; i < possibilitiesByDie.length; i++) {
-    rollNumbers = getARoll(possibilitiesByDie[i], rollNumbers)
+    rollNumbers = expandRollsWithNewDie(possibilitiesByDie[i], rollNumbers)
   }
 
   return rollNumbers;
 }
 
-const getARoll = (newDie: number[], rollSoFar: number[][]) => {
+const expandRollsWithNewDie = (newDie: number[], rollSoFar: number[][]) => {
   let newRolls: number[][] = [];
   for (let i = 0; i < rollSoFar.length; i++) {
     let latestRoll: number[] = [...rollSoFar[i]];
