@@ -1,33 +1,43 @@
-import { roll } from "./types";
+import { diceList, roll } from "./types";
 
 // acceptable values d6 2d6 d6+d8 d8+2d12 
 const interperetDiceString = (diceString: string) => {
-  let dice: number[] = [];
+  let diceList: diceList = {dice: [], constant: 0};
+  // let dice: number[] = [];
+  // let constant: number = 0;
   // interperet string
   let diceSets: string[] = diceString.split('+');
   if (diceSets.length === 0) {
     throw new Error('no dice provided in the dice String');
   }
   diceSets.forEach((diceGroup) => {
+    let d_found = false;
     for (let i=0; i<diceGroup.length; i++) {
       if (diceGroup[i] === 'd') {
+        d_found = true;
         if (i === 0) {
           diceGroup = '1' + diceGroup;
         }
         break;
       } 
     }
-    let splitDiceGroup = diceGroup.split('d');
-    if (splitDiceGroup.length !== 2) throw new Error(`the dice group has the wrong number of elements: ${splitDiceGroup}`);
-    const diceCount = parseInt(splitDiceGroup[0]);
-    const diceValue = parseInt(splitDiceGroup[1]);
-    if (typeof diceCount !== 'number') throw new Error(`the first part of a dice group, before the d, should be a number: ${diceCount}, type: ${typeof diceCount}`);
-    if (typeof diceValue !== 'number') throw new Error(`the second part of a dice group, after the d, should be a number ${diceValue}, type ${typeof diceValue}`);
-    for (let i = 0; i < diceCount; i++) {
-      dice.push(diceValue);
+    if (d_found) {
+      let splitDiceGroup = diceGroup.split('d');
+      if (splitDiceGroup.length !== 2) throw new Error(`the dice group has the wrong number of elements: ${splitDiceGroup}`);
+      const diceCount = parseInt(splitDiceGroup[0]);
+      const diceValue = parseInt(splitDiceGroup[1]);
+      if (typeof diceCount !== 'number') throw new Error(`the first part of a dice group, before the d, should be a number: ${diceCount}, type: ${typeof diceCount}`);
+      if (typeof diceValue !== 'number') throw new Error(`the second part of a dice group, after the d, should be a number ${diceValue}, type ${typeof diceValue}`);
+      for (let i = 0; i < diceCount; i++) {
+        diceList.dice.push(diceValue);
+      }
+    } else {
+      let constant: number = parseInt(diceGroup);
+      if (typeof constant !== 'number') throw new Error(`an unknown, non-dice non-integer dice group was added: ${diceGroup}`)
+      diceList.constant += constant;
     }
   });
-  return dice;
+  return diceList;
 }
 
 /*
@@ -52,7 +62,8 @@ const getSingleResultObjectFromDiceRolled = (roll: number[]): roll => {
   }
 }
 
-const getDiceResults = (dice: number[]) => {
+const getDiceResults = (diceList: diceList) => {
+  const dice = diceList.dice;
   // console.log(dice)
   // let rolls: roll[][] = [];
   // build list of rolls per die
@@ -96,7 +107,8 @@ const args = process.argv;
 args.shift(); args.shift();
 
 const dice = interperetDiceString(args[0]);
-console.log(`dice: ${dice}`)
+// console.log(`dice: ${dice.dice}`)
+// console.log(`constant: ${dice.constant}`)
 const results = getDiceResults(dice);
 results.forEach((result) => {
   // console.log(result);

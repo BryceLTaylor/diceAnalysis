@@ -7,8 +7,13 @@ type roll = {
   count: number;
 }
 
+type diceList = {
+  dice: number[],
+  constant: number
+}
+
 type result = {
   success: boolean;
 }
 
-export { result, roll }
+export { diceList, result, roll }
