@@ -63,7 +63,7 @@ const getSingleResultObjectFromDiceRolled = (roll: number[]): roll => {
 const getDiceResults = (diceList: diceList) => {
   const dice = diceList.dice;
   // console.log(dice)
-  // let rolls: roll[][] = [];
+  let rolls: roll[] = [];
   // build list of rolls per die
   let possibilitiesByDie: number[][] = [];
   for (let i = 0; i < dice.length; i++) {
@@ -82,8 +82,8 @@ const getDiceResults = (diceList: diceList) => {
   for (let i = 1; i < possibilitiesByDie.length; i++) {
     rollNumbers = expandRollsWithNewDie(possibilitiesByDie[i], rollNumbers)
   }
-
-  return rollNumbers;
+  rollNumbers.forEach((rollNumber) => rolls.push(getSingleResultObjectFromDiceRolled(rollNumber, diceList.constant)));
+  return rolls;
 }
 
 const expandRollsWithNewDie = (newDie: number[], rollSoFar: number[][]) => {
@@ -109,8 +109,8 @@ const dice = interperetDiceString(args[0]);
 // console.log(`constant: ${dice.constant}`)
 const results = getDiceResults(dice);
 results.forEach((result) => {
-  // console.log(result);
-  console.log(getSingleResultObjectFromDiceRolled(result))
+  console.log(result);
+  // console.log(getSingleResultObjectFromDiceRolled(result))
 });
 
 // console.log(results)
