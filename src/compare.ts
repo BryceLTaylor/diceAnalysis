@@ -49,9 +49,10 @@ type roll = {
 }
 */
 
+// don't sort dice yet.  Used to do .sort((a, b) => b - a)
 const getSingleResultObjectFromDiceRolled = (roll: number[], constant: number): roll => {
   return {
-    dice: roll.sort((a, b) => b - a),
+    dice: roll,
     constant: constant,
     total: roll.reduce((sum: number, currentValue: number) => sum + currentValue, 0),
     min: roll.reduce((smallest, newValue) => Math.min(smallest, newValue)),
