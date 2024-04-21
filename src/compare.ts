@@ -30,11 +30,53 @@ const interperetDiceString = (diceString: string) => {
   return dice;
 }
 
+/*
+type roll = {
+  dice: number[];
+  total: number;
+  min: number;
+  max: number;
+  multiples: number[][];
+}
+*/
 const getDiceResults = (dice: number[]) => {
-  let rolls: roll[] = [];
-  // do some stuff
-  
-  return rolls;
+  // console.log(dice)
+  // let rolls: roll[][] = [];
+  // build list of rolls per die
+  let possibilitiesByDie: number[][] = [];
+  for (let i = 0; i < dice.length; i++) {
+    let rollsOnSingleDie: number[] = []; 
+    for (let j = 1; j <= dice[i]; j++) {
+      rollsOnSingleDie.push(j);
+    }
+    possibilitiesByDie.push(rollsOnSingleDie);
+  }
+  console.log(possibilitiesByDie);
+
+  // get all possible rolls from possibilities per die
+  // start with first die in the rollNumbers array
+  let rollNumbers: number[][] = [];
+  for (let i = 0; i < possibilitiesByDie[0].length; i++) rollNumbers.push([possibilitiesByDie[0][i]])
+  for (let i = 1; i < possibilitiesByDie.length; i++) {
+    rollNumbers = getARoll(possibilitiesByDie[i], rollNumbers)
+  }
+
+  return rollNumbers;
+}
+
+const getARoll = (newDie: number[], rollSoFar: number[][]) => {
+  let newRolls: number[][] = [];
+  for (let i = 0; i < rollSoFar.length; i++) {
+    let latestRoll: number[] = [...rollSoFar[i]];
+ 
+    for (let j = 0; j < newDie.length; j++) {
+      const brandNewRoll: number[] = [...latestRoll];
+      brandNewRoll.push(newDie[j])
+      newRolls.push(brandNewRoll);
+    }
+  }
+
+  return newRolls;
 }
 
 const args = process.argv;
@@ -43,6 +85,8 @@ args.shift(); args.shift();
 const dice = interperetDiceString(args[0]);
 console.log(`dice: ${dice}`)
 const results = getDiceResults(dice);
-console.log(results)
+results.forEach((result) => console.log(result));
+
+// console.log(results)
 
 
