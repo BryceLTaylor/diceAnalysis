@@ -17,4 +17,6 @@ type result = {
   success: boolean;
 }
 
-export { diceList, result, roll }
+type determineEquivalentFunction = (rollA: roll, rollB: roll) => boolean;
+
+export { determineEquivalentFunction, diceList, result, roll }

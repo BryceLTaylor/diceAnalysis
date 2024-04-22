@@ -1,4 +1,5 @@
-import { diceList, roll } from "./types";
+import { deepStrictEqual } from "assert";
+import { determineEquivalentFunction, diceList, result, roll } from "./types";
 
 // acceptable values d6 2d6 d6+d8 d8+2d12 
 const interperetDiceString = (diceString: string) => {
@@ -127,6 +128,28 @@ const findMultiples = (originalRoll: roll): roll => {
   return originalRoll;
 }
 
+const detemineEqualSums = (currentRoll: roll, nextRoll: roll): boolean => {
+  if (currentRoll.total === nextRoll.total) return true
+  return false;
+}
+
+const collectEquivalentRolls = (rolls: roll[], equivalentFunction: determineEquivalentFunction) => {
+  let newRolls: roll[] = [];
+  for (let i = rolls.length - 1; i >= 0; i--) {
+    const currentRoll = rolls[i];
+    rolls.splice(i, 1);
+    for (let j = rolls.length - 1; j >= 0; j--) {
+      if (equivalentFunction(currentRoll, rolls[j])) {
+        currentRoll.count++;
+        rolls.splice(j, 1);
+        i--;
+      }
+    }
+    newRolls.push(currentRoll);
+  }
+  return newRolls;
+};
+
 const args = process.argv;
 args.shift(); args.shift();
 
@@ -134,7 +157,8 @@ const dice = interperetDiceString(args[0]);
 // console.log(`dice: ${dice.dice}`)
 // console.log(`constant: ${dice.constant}`)
 const results = getDiceResults(dice);
-results.forEach((result) => {
+const condensedResults = collectEquivalentRolls(results, detemineEqualSums)
+condensedResults.forEach((result) => {
   console.log(result);
   // console.log(getSingleResultObjectFromDiceRolled(result))
 });
