@@ -14,9 +14,12 @@ type diceList = {
 }
 
 type result = {
-  success: boolean;
+  value: string;
+  count: number;
 }
 
 type determineEquivalentFunction = (rollA: roll, rollB: roll) => boolean;
 
-export { determineEquivalentFunction, diceList, result, roll }
+type determineResultFunction = (rolls: roll) => result;
+
+export { determineEquivalentFunction, determineResultFunction, diceList, result, roll }

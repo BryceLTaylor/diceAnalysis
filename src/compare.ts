@@ -1,5 +1,5 @@
 import { deepStrictEqual } from "assert";
-import { determineEquivalentFunction, diceList, result, roll } from "./types";
+import { determineEquivalentFunction, determineResultFunction, diceList, result, roll } from "./types";
 
 // acceptable values d6 2d6 d6+d8 d8+2d12 
 const interperetDiceString = (diceString: string) => {
@@ -63,7 +63,7 @@ const getSingleResultObjectFromDiceRolled = (roll: number[], constant: number): 
   }
 }
 
-const getDiceResults = (diceList: diceList) => {
+const getDiceThrows = (diceList: diceList) => {
   const dice = diceList.dice;
   // console.log(dice)
   let rolls: roll[] = [];
@@ -150,15 +150,37 @@ const collectEquivalentRolls = (rolls: roll[], equivalentFunction: determineEqui
   return newRolls;
 };
 
+const sumGreaterThanSeven = (roll: roll ): result =>  {
+  if (roll.total > 7) return {value: 'success', count: roll.count}
+  return {value: 'failure', count: roll.count}
+}
+
+const getResultsFromRolls = (rolls: roll[], resultFunction: determineResultFunction) => {
+  let results: result[] = [];
+  for (let i = 0; i < rolls.length; i++) {
+    let result: result = resultFunction(rolls[i]);
+    let match: result = results.find((element) => {
+      return element.value === result.value
+    });
+    if (match === undefined) {
+      results.push(result)
+    } else {
+      match.count += result.count;
+    }
+  }
+  return results;
+};
+
 const args = process.argv;
 args.shift(); args.shift();
 
 const dice = interperetDiceString(args[0]);
 // console.log(`dice: ${dice.dice}`)
 // console.log(`constant: ${dice.constant}`)
-const results = getDiceResults(dice);
-const condensedResults = collectEquivalentRolls(results, detemineEqualSums)
-condensedResults.forEach((result) => {
+const diceThrows = getDiceThrows(dice);
+// const condensedRolls = collectEquivalentRolls(diceThrows, detemineEqualSums);
+const results = getResultsFromRolls(diceThrows, sumGreaterThanSeven);
+results.forEach((result) => {
   console.log(result);
   // console.log(getSingleResultObjectFromDiceRolled(result))
 });
