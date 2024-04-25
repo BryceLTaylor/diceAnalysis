@@ -1,7 +1,16 @@
 import { determineEquivalentFunction, determineResultFunction, diceList, result, roll } from "./types";
 
-// acceptable values d6 2d6 d6+d8 d8+2d12 
-const interperetDiceString = (diceString: string) => {
+// roll: the collection of faces as the result of rolling a set of dice
+
+// result: the semantic meaning of a set roll based on a condition.  i.e. 'success' or
+// 'both teams lose one army' 
+
+// Takes a string representing dice and return an object representing the dice included 
+// in the roll and a constant number to be added. 
+// The diceList object contains an array of numbers, called dice, representing the 
+// largest face on the die and a number, called constant, for the constant to be added.
+// Acceptable input values d6 2d6 d6+d8 d8+2d12 
+const interperetDiceString = (diceString: string): diceList => {
   let diceList: diceList = {dice: [], constant: 0};
   // interperet string
   let diceSets: string[] = diceString.split('+');
@@ -62,6 +71,8 @@ const getSingleResultObjectFromDiceRolled = (roll: number[], constant: number): 
   }
 }
 
+// expands a list of possible rolls if another die is added.
+// takes a list of possible rolls on a die and an existing list of rolls.
 const expandRollsWithNewDie = (newDie: number[], rollSoFar: number[][]) => {
   let newRolls: number[][] = [];
   for (let i = 0; i < rollSoFar.length; i++) {
@@ -75,6 +86,7 @@ const expandRollsWithNewDie = (newDie: number[], rollSoFar: number[][]) => {
   return newRolls;
 }
 
+// get list of all rolls from a list of dice to be rolled
 const getDiceThrows = (diceList: diceList) => {
   const dice = diceList.dice;
   // console.log(dice)
@@ -88,7 +100,7 @@ const getDiceThrows = (diceList: diceList) => {
     }
     possibilitiesByDie.push(rollsOnSingleDie);
   }
-  console.log(possibilitiesByDie);
+  // console.log(possibilitiesByDie);
 
   // get all possible rolls from possibilities per die
   // start with first die in the rollNumbers array
@@ -105,6 +117,8 @@ const getDiceThrows = (diceList: diceList) => {
   return rolls;
 }
 
+// given a roll, find sets of doubles, tripples, etc. that can be found among
+// the dice faces.  Updates the roll object with the multiples
 const findMultiples = (originalRoll: roll): roll => {
   let rollList: number[] = [...originalRoll.dice]
   let multipleList: number[][] = [];
@@ -147,6 +161,8 @@ const collectEquivalentRolls = (rolls: roll[], equivalentFunction: determineEqui
   return newRolls;
 };
 
+// takes a list of rolls and a function that outputs a result object and returns 
+// a list of results.
 const getResultsFromRolls = (playerRolls: roll[], resultFunction: determineResultFunction) => { // need to be able to pass in gm rolls optionally
   let results: result[] = [];
   for (let i = 0; i < playerRolls.length; i++) {
