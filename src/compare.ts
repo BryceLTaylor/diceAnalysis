@@ -161,6 +161,19 @@ const collectEquivalentRolls = (rolls: roll[], equivalentFunction: determineEqui
   return newRolls;
 };
 
+// adds a result to an array of results, incrementing a count if the result 
+// already exists in the array
+const addResultToResults = (result: result, allResults: result[]) => {
+  let match: result = allResults.find((element) => {
+    return element.value === result.value
+  });
+  if (match === undefined) {
+    allResults.push(result)
+  } else {
+    match.count += result.count;
+  }
+}
+
 // takes a list of rolls and a function that outputs a result object and returns 
 // a list of results.
 const getResultsFromRolls = (playerRolls: roll[], resultFunction: determineResultFunction) => { // need to be able to pass in gm rolls optionally
