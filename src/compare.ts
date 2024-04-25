@@ -62,6 +62,19 @@ const getSingleResultObjectFromDiceRolled = (roll: number[], constant: number): 
   }
 }
 
+const expandRollsWithNewDie = (newDie: number[], rollSoFar: number[][]) => {
+  let newRolls: number[][] = [];
+  for (let i = 0; i < rollSoFar.length; i++) {
+    let latestRoll: number[] = [...rollSoFar[i]];
+    for (let j = 0; j < newDie.length; j++) {
+      const brandNewRoll: number[] = [...latestRoll];
+      brandNewRoll.push(newDie[j])
+      newRolls.push(brandNewRoll);
+    }
+  }
+  return newRolls;
+}
+
 const getDiceThrows = (diceList: diceList) => {
   const dice = diceList.dice;
   // console.log(dice)
@@ -90,21 +103,6 @@ const getDiceThrows = (diceList: diceList) => {
     rolls.push(rollToAdd);
   });
   return rolls;
-}
-
-const expandRollsWithNewDie = (newDie: number[], rollSoFar: number[][]) => {
-  let newRolls: number[][] = [];
-  for (let i = 0; i < rollSoFar.length; i++) {
-    let latestRoll: number[] = [...rollSoFar[i]];
- 
-    for (let j = 0; j < newDie.length; j++) {
-      const brandNewRoll: number[] = [...latestRoll];
-      brandNewRoll.push(newDie[j])
-      newRolls.push(brandNewRoll);
-    }
-  }
-
-  return newRolls;
 }
 
 const findMultiples = (originalRoll: roll): roll => {
