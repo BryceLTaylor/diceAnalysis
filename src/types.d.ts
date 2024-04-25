@@ -20,6 +20,6 @@ type result = {
 
 type determineEquivalentFunction = (rollA: roll, rollB: roll) => boolean;
 
-type determineResultFunction = (rolls: roll) => result;
+type determineResultFunction = (rolls: roll, comparison?: roll | number) => result;
 
 export { determineEquivalentFunction, determineResultFunction, diceList, result, roll }

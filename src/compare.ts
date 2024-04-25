@@ -176,17 +176,21 @@ const addResultToResults = (result: result, allResults: result[]) => {
 
 // takes a list of rolls and a function that outputs a result object and returns 
 // a list of results.
-const getResultsFromRolls = (playerRolls: roll[], resultFunction: determineResultFunction) => { // need to be able to pass in gm rolls optionally
+const getResultsFromRolls = (playerRolls: roll[], resultFunction: determineResultFunction, oppositionRoll?: roll[] | number | undefined) => { // need to be able to pass in gm rolls optionally
   let results: result[] = [];
   for (let i = 0; i < playerRolls.length; i++) {
-    let result: result = resultFunction(playerRolls[i]); // need to be able to pass in gm rolls
-    let match: result = results.find((element) => {
-      return element.value === result.value
-    });
-    if (match === undefined) {
-      results.push(result)
+    if (oppositionRoll === undefined) {
+      let result: result = resultFunction(playerRolls[i]);
+      addResultToResults(result, results);
+      // , oppositionRoll[i]
+    } else if (typeof oppositionRoll === 'number') {
+      let result: result = resultFunction(playerRolls[i], oppositionRoll);
+      addResultToResults(result, results);
     } else {
-      match.count += result.count;
+      for (let j = 0; j < oppositionRoll.length; j++) {
+        let result: result = resultFunction(playerRolls[i], oppositionRoll[j]); 
+        addResultToResults(result, results);
+      }
     }
   }
   return results;
