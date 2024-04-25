@@ -1,5 +1,5 @@
-import { deepStrictEqual } from "assert";
 import { determineEquivalentFunction, determineResultFunction, diceList, result, roll } from "./types";
+import { sumGreaterThanSeven, myGameDiceResult } from './rollComparisons';
 
 // acceptable values d6 2d6 d6+d8 d8+2d12 
 const interperetDiceString = (diceString: string) => {
@@ -149,11 +149,6 @@ const collectEquivalentRolls = (rolls: roll[], equivalentFunction: determineEqui
   }
   return newRolls;
 };
-
-const sumGreaterThanSeven = (roll: roll ): result =>  {
-  if (roll.total > 7) return {value: 'success', count: roll.count}
-  return {value: 'failure', count: roll.count}
-}
 
 const getResultsFromRolls = (rolls: roll[], resultFunction: determineResultFunction) => {
   let results: result[] = [];
