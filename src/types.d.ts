@@ -16,6 +16,7 @@ type diceList = {
 type result = {
   value: string;
   count: number;
+  percentage?: number;
 }
 
 type determineEquivalentFunction = (rollA: roll, rollB: roll) => boolean;
