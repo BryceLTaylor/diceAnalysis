@@ -1,5 +1,4 @@
 import { determineEquivalentFunction, determineResultFunction, diceList, result, roll } from "./types";
-import { sumGreaterThanSeven, myGameDiceResult } from './rollComparisons';
 
 // acceptable values d6 2d6 d6+d8 d8+2d12 
 const interperetDiceString = (diceString: string) => {
@@ -166,20 +165,4 @@ const getResultsFromRolls = (playerRolls: roll[], resultFunction: determineResul
   return results;
 };
 
-const args = process.argv;
-args.shift(); args.shift();
-
-const dice = interperetDiceString(args[0]);
-// console.log(`dice: ${dice.dice}`)
-// console.log(`constant: ${dice.constant}`)
-const diceThrows = getDiceThrows(dice);
-// const condensedRolls = collectEquivalentRolls(diceThrows, detemineEqualSums);
-const results = getResultsFromRolls(diceThrows, sumGreaterThanSeven);
-results.forEach((result) => {
-  console.log(result);
-  // console.log(getSingleResultObjectFromDiceRolled(result))
-});
-
-// console.log(results)
-
-
+export { getDiceThrows, getResultsFromRolls, interperetDiceString }
