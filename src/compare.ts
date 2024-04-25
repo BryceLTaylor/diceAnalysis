@@ -150,10 +150,10 @@ const collectEquivalentRolls = (rolls: roll[], equivalentFunction: determineEqui
   return newRolls;
 };
 
-const getResultsFromRolls = (rolls: roll[], resultFunction: determineResultFunction) => {
+const getResultsFromRolls = (playerRolls: roll[], resultFunction: determineResultFunction) => { // need to be able to pass in gm rolls optionally
   let results: result[] = [];
-  for (let i = 0; i < rolls.length; i++) {
-    let result: result = resultFunction(rolls[i]);
+  for (let i = 0; i < playerRolls.length; i++) {
+    let result: result = resultFunction(playerRolls[i]); // need to be able to pass in gm rolls
     let match: result = results.find((element) => {
       return element.value === result.value
     });
