@@ -49,4 +49,40 @@ const myGameFirstAndSecond = (playerRoll: roll, oppRoll: roll): result => {
   return {value: resultString, count: playerRoll.count * oppRoll.count}
 }
 
-export { sumGreaterThanNumber, myGameDiceResult, myGameFirstAndSecond };
+const bronzeNamedealer = (goldRoll: roll, jetRoll: roll): result => {
+  let resultString = '';
+  let goldStrikes = 0;
+  let jetStrikes = 0;
+  goldRoll.dice.forEach((dieValue: number) => {
+    if (dieValue > 4) goldStrikes += 1;
+  })
+  jetRoll.dice.forEach((dieValue: number) => {
+    if (dieValue > 4) jetStrikes += 1;
+  })
+  const totalStrikes = goldStrikes + jetStrikes;
+  
+  if (totalStrikes < 3) {
+    resultString = `Strikes: ${totalStrikes}, Destiny: ${0}`
+  } else {
+    resultString = `Strikes: ${2}, Destiny: ${totalStrikes - 2}`
+  }
+  // resultString += `, Demand: ${goldStrikes > jetStrikes}`
+  return {value: resultString, count: 1}
+}
+
+const bronzeNamedealerDemands = (goldRoll: roll, jetRoll: roll): result => {
+  let resultString = '';
+  let goldStrikes = 0;
+  let jetStrikes = 0;
+  goldRoll.dice.forEach((dieValue: number) => {
+    if (dieValue > 4) goldStrikes += 1;
+  })
+  jetRoll.dice.forEach((dieValue: number) => {
+    if (dieValue > 4) jetStrikes += 1;
+  })
+  
+  resultString = `demand: ${goldStrikes > jetStrikes}`
+  return {value: resultString, count: 1}
+}
+
+export { bronzeNamedealer, bronzeNamedealerDemands, sumGreaterThanNumber, myGameDiceResult, myGameFirstAndSecond };

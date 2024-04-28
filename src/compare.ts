@@ -1,5 +1,5 @@
 import { determineEquivalentFunction, determineResultFunction, diceList, result, roll } from "./types";
-import { myGameDiceResult, myGameFirstAndSecond, sumGreaterThanNumber } from "./rollComparisons";
+import { bronzeNamedealer, bronzeNamedealerDemands, myGameDiceResult, myGameFirstAndSecond, sumGreaterThanNumber } from "./rollComparisons";
 
 // roll: the collection of faces as the result of rolling a set of dice
 
@@ -207,11 +207,18 @@ const getComparisonFunctionFromString = (comparisonModeString: string): determin
       return myGameFirstAndSecond;
     case 'sumGreater':
       return sumGreaterThanNumber;
+    case 'bronze:namedealer':
+      return bronzeNamedealer;
+    case 'bronze:namedealer:demands':
+      return bronzeNamedealerDemands;
     default:
       const badCommandError: string = `the first argument to calling this should be a command
       indicating a comparison method.  Acceptable options include:
-        myGame, myGameFirstSecond, and sumGreater`;
-      throw new Error(`${badCommandError}\n command found: ${comparisonModeString}`);
+      bronze:namedealer, bronze:namedealer:demands, myGame, myGameFirstSecond, and sumGreater`;
+      throw new Error(`${badCommandError}
+
+      command found: ${comparisonModeString}
+      `);
   }
 }
 
