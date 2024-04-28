@@ -1,4 +1,5 @@
 import { determineEquivalentFunction, determineResultFunction, diceList, result, roll } from "./types";
+import { myGameDiceResult, myGameFirstAndSecond, sumGreaterThanNumber } from "./rollComparisons";
 
 // roll: the collection of faces as the result of rolling a set of dice
 
@@ -87,7 +88,7 @@ const expandRollsWithNewDie = (newDie: number[], rollSoFar: number[][]) => {
 }
 
 // get list of all rolls from a list of dice to be rolled
-const getDiceThrows = (diceList: diceList) => {
+const getDiceThrows = (diceList: diceList): roll[] | number => {
   const dice = diceList.dice;
   // console.log(dice)
   let rolls: roll[] = [];
@@ -100,7 +101,9 @@ const getDiceThrows = (diceList: diceList) => {
     }
     possibilitiesByDie.push(rollsOnSingleDie);
   }
-  // console.log(possibilitiesByDie);
+
+  // if there are no dice, just return the constant
+  if (possibilitiesByDie.length === 0) return diceList.constant;
 
   // get all possible rolls from possibilities per die
   // start with first die in the rollNumbers array
@@ -196,4 +199,39 @@ const getResultsFromRolls = (playerRolls: roll[], resultFunction: determineResul
   return results;
 };
 
-export { getDiceThrows, getResultsFromRolls, interperetDiceString }
+const getComparisonFunctionFromString = (comparisonModeString: string): determineResultFunction => {
+  switch (comparisonModeString) {
+    case 'myGame':
+      return myGameDiceResult;
+    case 'myGameFirstSecond':
+      return myGameFirstAndSecond;
+    case 'sumGreater':
+      return sumGreaterThanNumber;
+    default:
+      const badCommandError: string = `the first argument to calling this should be a command
+      indicating a comparison method.  Acceptable options include:
+        myGame, myGameFirstSecond, and sumGreater`;
+      throw new Error(`${badCommandError}\n command found: ${comparisonModeString}`);
+  }
+}
+
+const compareDice = (comparisonModeString: string, playerDiceString: string, oppositionDiceString: string): result[] => {
+  const comparisonFunction: determineResultFunction = getComparisonFunctionFromString(comparisonModeString);
+  const playerDice: diceList = interperetDiceString(playerDiceString);
+  const oppositionDice: diceList = interperetDiceString(oppositionDiceString);
+  const playerDiceThrows: roll[] | number = getDiceThrows(playerDice);
+  if (typeof playerDiceThrows === 'number') {
+    throw new Error(`The second argument of this tool must contain at least one die.  Your argument: ${comparisonModeString} `)
+  }
+  const oppositionDiceThrows: roll[] | number = getDiceThrows(oppositionDice);
+  const results = getResultsFromRolls(playerDiceThrows, comparisonFunction, oppositionDiceThrows);
+  let total = results.reduce((currentTotal, newValue) => currentTotal + newValue.count, 0);
+  console.log(`total rolls: ${total}`);
+  
+  results.forEach((result) => {
+    result.percentage = Math.floor(result.count / total * 10000) / 100;
+  });
+  return results;
+}
+
+export { compareDice, getDiceThrows, getResultsFromRolls, interperetDiceString }
