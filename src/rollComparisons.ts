@@ -85,4 +85,23 @@ const bronzeNamedealerDemands = (goldRoll: roll, jetRoll: roll): result => {
   return {value: resultString, count: 1}
 }
 
-export { bronzeNamedealer, bronzeNamedealerDemands, sumGreaterThanNumber, myGameDiceResult, myGameFirstAndSecond };
+const risk = (attackerRoll: roll, defenderRoll: roll): result => {
+  // let resultString = '';
+  const attackerRollSorted = attackerRoll.dice.sort((a: number, b: number) => b - a);
+  const defenderRollSorted = defenderRoll.dice.sort((a: number, b: number) => b - a);
+  const fewestDice = defenderRollSorted.length < attackerRollSorted.length ? defenderRollSorted.length : attackerRollSorted.length;
+
+  let attackerLosses = 0;
+  let defenderLosses = 0;
+  for (let i = 0; i < fewestDice; i++) {
+    if (attackerRollSorted[i] > defenderRollSorted[i]) {
+      defenderLosses += 1;
+    } else {
+      attackerLosses += 1;
+    }
+  }
+  let resultString = `attacker losses: ${attackerLosses}, defender losses: ${defenderLosses}`;
+  return {value: resultString, count: 1}
+}
+
+export { bronzeNamedealer, bronzeNamedealerDemands, sumGreaterThanNumber, myGameDiceResult, myGameFirstAndSecond, risk };
